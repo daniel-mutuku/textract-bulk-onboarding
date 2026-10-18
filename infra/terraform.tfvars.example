@@ -1,0 +1,16 @@
+# AWS CLI profile from ~/.aws/config or ~/.aws/credentials
+profile = "your-aws-profile"
+region  = "eu-west-1"
+
+# S3 bucket names are globally unique: use something like your initials + a number
+bucket_suffix = "xx01"
+
+# The frontend origin allowed to upload directly to S3
+allowed_origin = "http://localhost:5173"
+
+# Optional: documents extracted at once (the Textract rate limit). Check the
+# AnalyzeDocument quota in the Service Quotas console before raising it.
+# extract_concurrency = 5
+
+# Optional: email for dead-letter-queue alarms (confirm the subscription email).
+# alarm_email = "you@example.com"

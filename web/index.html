@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zip Upload</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath d='M16 22V10m-5 5 5-5 5 5' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="poll.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="masthead">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+          <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/>
+          <path d="M9 13h6M9 17h4"/>
+        </svg>
+      </span>
+      <span class="brand-name">Document onboarding</span>
+    </header>
+
+    <main class="card">
+      <div class="card-head">
+        <h1>Upload an archive</h1>
+        <p>Zip files go straight from your browser to S3 in parallel parts. Failed parts are retried automatically.</p>
+      </div>
+
+      <label class="dropzone" id="dropzone">
+        <input id="file" class="visually-hidden" type="file" accept=".zip,application/zip,application/x-zip-compressed">
+        <span class="dropzone-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16V4M7 9l5-5 5 5"/>
+            <path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/>
+          </svg>
+        </span>
+        <span class="dropzone-title">Drop a .zip file here, or <span class="link">browse</span></span>
+        <span class="dropzone-hint">Multi-gigabyte archives are fine</span>
+      </label>
+
+      <section class="upload" id="panel" hidden>
+        <div class="file-row">
+          <span class="file-badge" aria-hidden="true">ZIP</span>
+          <div class="file-info">
+            <div class="file-name" id="name"></div>
+            <div class="file-meta" id="meta"></div>
+          </div>
+          <span class="pill" id="pill" role="status"></span>
+        </div>
+
+        <div class="bar" id="bar" role="progressbar" aria-label="Upload progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="bar-fill" id="bar-fill"></div>
+        </div>
+
+        <dl class="stats">
+          <div class="stat"><dt>Progress</dt><dd id="stat-percent">0%</dd></div>
+          <div class="stat"><dt>Transferred</dt><dd id="stat-transferred">–</dd></div>
+          <div class="stat"><dt>Speed</dt><dd id="stat-speed">–</dd></div>
+          <div class="stat"><dt>Time left</dt><dd id="stat-eta">–</dd></div>
+        </dl>
+
+        <div class="parts" id="parts" hidden>
+          <div class="parts-head">
+            <span class="parts-title">Parts</span>
+            <span class="parts-summary" id="parts-summary"></span>
+          </div>
+          <div class="parts-map" id="parts-map" aria-hidden="true"></div>
+          <ul class="legend" aria-hidden="true">
+            <li><span class="swatch" data-state="pending"></span>Waiting</li>
+            <li><span class="swatch" data-state="active"></span>Uploading</li>
+            <li><span class="swatch" data-state="retrying"></span>Retrying</li>
+            <li><span class="swatch" data-state="done"></span>Stored</li>
+            <li><span class="swatch" data-state="failed"></span>Failed</li>
+          </ul>
+        </div>
+
+        <div class="notice" id="notice" role="status" hidden></div>
+
+        <div class="actions">
+          <button class="btn btn-secondary" id="cancel" type="button">Cancel upload</button>
+          <button class="btn btn-secondary" id="again" type="button" hidden>Upload another file</button>
+        </div>
+      </section>
+
+      <section class="processing" id="processing" hidden aria-live="polite">
+        <div class="processing-head">
+          <h2>Processing</h2>
+          <span class="pill" id="proc-pill"></span>
+        </div>
+        <p class="processing-headline" id="proc-headline"></p>
+        <div class="bar" id="proc-bar" role="progressbar" aria-label="Processing progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="bar-fill" id="proc-fill"></div>
+        </div>
+        <dl class="stats">
+          <div class="stat"><dt>Processed</dt><dd id="proc-processed">–</dd></div>
+          <div class="stat"><dt>Pending</dt><dd id="proc-pending">–</dd></div>
+          <div class="stat"><dt>Skipped</dt><dd id="proc-skipped">–</dd></div>
+          <div class="stat"><dt>Failed</dt><dd id="proc-failed">–</dd></div>
+        </dl>
+        <p class="processing-note" id="proc-note" hidden></p>
+        <div class="actions">
+          <a class="btn btn-primary" id="results-link" href="#">View results</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot" id="foot"></footer>
+  </div>
+</body>
+</html>

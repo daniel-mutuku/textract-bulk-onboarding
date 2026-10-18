@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Batch Results</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Cpath d='M16 22V10m-5 5 5-5 5 5' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="poll.js" defer></script>
+  <script src="batch.js" defer></script>
+</head>
+<body>
+  <div class="shell shell-wide">
+    <header class="masthead">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+          <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/>
+          <path d="M9 13h6M9 17h4"/>
+        </svg>
+      </span>
+      <span class="brand-name">Document onboarding</span>
+      <a class="masthead-link" href="./">Upload another zip</a>
+    </header>
+
+    <main class="card">
+      <div class="file-row">
+        <span class="file-badge" aria-hidden="true">ZIP</span>
+        <div class="file-info">
+          <div class="file-name" id="name">Loading…</div>
+          <div class="file-meta" id="meta"></div>
+        </div>
+        <span class="pill" id="pill"></span>
+      </div>
+      <p class="processing-headline" id="headline" aria-live="polite"></p>
+      <div class="bar" id="bar" role="progressbar" aria-label="Processing progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="bar-fill" id="bar-fill"></div>
+      </div>
+      <dl class="stats stats-5">
+        <div class="stat"><dt>Entries</dt><dd id="s-total">–</dd></div>
+        <div class="stat"><dt>Processed</dt><dd id="s-processed">–</dd></div>
+        <div class="stat"><dt>Pending</dt><dd id="s-pending">–</dd></div>
+        <div class="stat"><dt>Skipped</dt><dd id="s-skipped">–</dd></div>
+        <div class="stat"><dt>Failed</dt><dd id="s-failed">–</dd></div>
+      </dl>
+      <p class="processing-note" id="note" hidden></p>
+    </main>
+
+    <section class="card results">
+      <div class="results-head">
+        <h2>Documents</h2>
+        <div class="tabs" role="tablist" aria-label="Filter documents">
+          <button class="tab" role="tab" data-filter="all" aria-selected="true">All <span class="tab-count" id="c-all"></span></button>
+          <button class="tab" role="tab" data-filter="review" aria-selected="false">Low confidence <span class="tab-count" id="c-review"></span></button>
+          <button class="tab" role="tab" data-filter="failed" aria-selected="false">Failed <span class="tab-count" id="c-failed"></span></button>
+          <button class="tab" role="tab" data-filter="skipped" aria-selected="false">Skipped <span class="tab-count" id="c-skipped"></span></button>
+        </div>
+      </div>
+      <p class="results-hint">Click a document to see its scan beside the extracted fields. Fields under <span class="conf conf-low">80%</span> confidence are highlighted.</p>
+      <div class="doc-list" id="docs"></div>
+      <p class="empty" id="empty" hidden></p>
+      <div class="actions actions-center">
+        <button class="btn btn-secondary" id="more" type="button" hidden>Load more</button>
+      </div>
+    </section>
+  </div>
+
+  <dialog class="viewer" id="viewer" aria-labelledby="v-name">
+    <div class="viewer-frame">
+      <div class="viewer-media" id="v-media"></div>
+      <aside class="viewer-side">
+        <header class="viewer-head">
+          <div class="viewer-title">
+            <h2 id="v-name"></h2>
+            <p class="viewer-file" id="v-file"></p>
+          </div>
+          <div class="viewer-nav">
+            <button class="icon-btn" id="v-prev" type="button" aria-label="Previous document" title="Previous (←)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <span class="viewer-pos" id="v-pos"></span>
+            <button class="icon-btn" id="v-next" type="button" aria-label="Next document" title="Next (→)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button class="icon-btn" id="v-close" type="button" aria-label="Close" title="Close (Esc)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </header>
+        <div class="viewer-meta" id="v-meta"></div>
+        <div class="viewer-body" id="v-body"></div>
+      </aside>
+    </div>
+  </dialog>
+</body>
+</html>
